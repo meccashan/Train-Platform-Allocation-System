@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Platform Allotment System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5e9f7;
+            color: #333333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #a115a1;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #f5e9f7;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #a115a1;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #c765c7;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #a115a1;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f2e1f2;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dfc1e8;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .train-form {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: #b01a0b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .platform-new {
+            color: #27ae60;
+        }
+        .platform-reused {
+            color: #f39c12;
+        }
+        
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(238, 191, 245, 0.5);
+            animation: floating 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        .particle:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .particle:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .particle:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .particle:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .particle:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .particle:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    <div class="container">
+        <h1>Train Platform Allotment System</h1>
+        
+        <div class="form-group">
+            <label for="trainCount">Number of Trains:</label>
+            <input type="number" id="trainCount" min="1" max="100" placeholder="Enter number of trains (1-100)">
+            <button id="generateForm">Generate Input Form</button>
+        </div>
+        
+        <div id="trainInputs"></div>
+        
+        <button id="calculate" style="display: none;">Calculate Platform Allocation</button>
+        
+        <div id="results" style="display: none;">
+            <h2>Platform Allocation Results</h2>
+            <div id="allocationTable"></div>
+            <div class="result" id="platformCount"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('mousemove', function(e) {
+            const particles = document.querySelector('.particles');
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = e.clientX + 'px';
+            particle.style.top = e.clientY + 'px';
+            const size = Math.random() * 50 + 10;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            const duration = Math.random() * 20 + 10;
+            particle.style.animationDuration = duration + 's';
+            particles.appendChild(particle);
+            setTimeout(() => {
+                particle.remove();
+            }, duration * 1000);
+        });
+        document.getElementById('generateForm').addEventListener('click', function() {
+            const trainCount = parseInt(document.getElementById('trainCount').value);
+            if (isNaN(trainCount) || trainCount < 1 || trainCount > 100) {
+                alert('Please enter a valid number of trains (1-100)');
+                return;
+            }
+            let html = '<div class="train-form"><h3>Enter Train Details</h3>';
+            for (let i = 0; i < trainCount; i++) {
+                html += `
+                    <div class="form-group">
+                        <h4>Train ${i + 1}</h4>
+                        <label for="arrival${i}">Arrival Time (HHMM, 0000-2359):</label>
+                        <input type="number" id="arrival${i}" min="0" max="2359" placeholder="e.g., 930 for 09:30">
+                        <div id="arrivalError${i}" class="error"></div>
+                        <label for="departure${i}">Departure Time (must be after arrival):</label>
+                        <input type="number" id="departure${i}" min="0" max="2359" placeholder="e.g., 1045 for 10:45">
+                        <div id="departureError${i}" class="error"></div>
+                    </div>
+                    <hr>
+                `;
+            }
+            html += '</div>';
+            document.getElementById('trainInputs').innerHTML = html;
+            document.getElementById('calculate').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+        });
+        document.getElementById('calculate').addEventListener('click', function() {
+            const trainCount = parseInt(document.getElementById('trainCount').value);
+            const arrival = [];
+            const departure = [];
+            const trainID = [];
+            let valid = true;
+            for (let i = 0; i < trainCount; i++) {
+                document.getElementById(`arrivalError${i}`).textContent = '';
+                document.getElementById(`departureError${i}`).textContent = '';
+            }
+            for (let i = 0; i < trainCount; i++) {
+                trainID.push(i + 1);
+                const arrivalInput = document.getElementById(`arrival${i}`);
+                const departureInput = document.getElementById(`departure${i}`);
+                arrival[i] = parseInt(arrivalInput.value);
+                departure[i] = parseInt(departureInput.value);
+                if (isNaN(arrival[i])){
+                    document.getElementById(`arrivalError${i}`).textContent = 'Please enter arrival time';
+                    valid = false;
+                } else if (arrival[i] < 0 || arrival[i] > 2359) {
+                    document.getElementById(`arrivalError${i}`).textContent = 'Arrival time must be between 0000 and 2359';
+                    valid = false;
+                }
+                if (isNaN(departure[i])) {
+                    document.getElementById(`departureError${i}`).textContent = 'Please enter departure time';
+                    valid = false;
+                } else if (departure[i] < 0 || departure[i] > 2359) {
+                    document.getElementById(`departureError${i}`).textContent = 'Departure time must be between 0000 and 2359';
+                    valid = false;
+                } else if (!isNaN(arrival[i]) && departure[i] <= arrival[i]) {
+                    document.getElementById(`departureError${i}`).textContent = 'Departure must be after arrival';
+                    valid = false;
+                }
+            }
+            if (!valid) {
+                return;
+            }
+            for (let i = 0; i < trainCount - 1; i++) {
+                for (let j = i + 1; j < trainCount; j++) {
+                    if (arrival[i] > arrival[j]) {
+                        [arrival[i], arrival[j]] = [arrival[j], arrival[i]];
+                        [departure[i], departure[j]] = [departure[j], departure[i]];
+                        [trainID[i], trainID[j]] = [trainID[j], trainID[i]];
+                    }
+                }
+            }
+            const platformAllocation = allocatePlatforms(arrival, departure, trainID, trainCount);
+            displayResults(platformAllocation, trainCount);
+        });
+        function allocatePlatforms(arrival, departure, trainID, n) {
+            const heap = [];
+            let nextPlatform = 1;
+            const allocations = [];
+            for (let i = 0; i < n; i++) {
+                let platform;
+                let reused = false;
+                if (heap.length > 0 && arrival[i] >= heap[0].departure) {
+                    platform = heap[0].platform;
+                    reused = true;
+                    heap.shift(); 
+                } else {
+                    platform = nextPlatform++;
+                }
+                allocations.push({
+                    trainID: trainID[i],
+                    arrival: arrival[i],
+                    departure: departure[i],
+                    platform: platform,
+                    reused: reused
+                });
+                heap.push({ departure: departure[i], platform: platform });
+                heap.sort((a, b) => a.departure - b.departure); 
+            }
+            return {
+                allocations: allocations,
+                platformsUsed: nextPlatform - 1
+            };
+        }
+        function formatTime(time) {
+            const hours = Math.floor(time / 100);
+            const minutes = time % 100;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+        function displayResults(allocation, trainCount) {
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Train ID</th>
+                            <th>Arrival</th>
+                            <th>Departure</th>
+                            <th>Platform</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            allocation.allocations.forEach(allocation => {
+                tableHTML += `
+                    <tr>
+                        <td>${allocation.trainID}</td>
+                        <td>${formatTime(allocation.arrival)}</td>
+                        <td>${formatTime(allocation.departure)}</td>
+                        <td>${allocation.platform}</td>
+                        <td class="${allocation.reused ? 'platform-reused' : 'platform-new'}">
+                            ${allocation.reused ? 'Reused' : 'New'}
+                        </td>
+                    </tr>
+                `;
+            });
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('allocationTable').innerHTML = tableHTML;
+            document.getElementById('platformCount').textContent = 
+                `Minimum Platforms Required: ${allocation.platformsUsed}`;
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
