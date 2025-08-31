@@ -22,3 +22,8 @@ It assigns platforms to trains based on their arrival and departure times, ensur
 1. **Compile the program** using a C++ compiler:  
    ```bash
    g++ train.cpp -o train
+   
+## 🌐 Live Demo
+
+
+🔗 View the Web Version here: https://meccashan.github.io/Train-Platform-Allocation-System/
